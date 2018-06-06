@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Sprites/Tiles/Grass_Dirt_Gravity_down_tileset.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/Tiles/Grass_Dirt_Gravity_left_tileset.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Tiles/Grass_Dirt_Gravity_right_tileset.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Tiles/Grass_Dirt_Gravity_up_tileset.png" type="Texture" id=4]
+
+[node name="GrassDirt" type="Node"]
+
+[node name="Down" type="Sprite" parent="." index="0"]
+
+visible = false
+texture = ExtResource( 1 )
+centered = false
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="Left" type="Sprite" parent="." index="1"]
+
+visible = false
+texture = ExtResource( 2 )
+centered = false
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="Right" type="Sprite" parent="." index="2"]
+
+texture = ExtResource( 3 )
+centered = false
+_sections_unfolded = [ "Transform" ]
+
+[node name="Up" type="Sprite" parent="." index="3"]
+
+visible = false
+texture = ExtResource( 4 )
+centered = false
+_sections_unfolded = [ "Offset", "Transform" ]
+
+

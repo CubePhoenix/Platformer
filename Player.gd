@@ -17,8 +17,6 @@ var gdirection
 func external_init():
 	startpoint = position
 	
-	print(gdirection)
-	
 	if (gdirection == Vector2(0, 1)):
 		$Sprite.flip_v = true
 	elif (gdirection == Vector2(-1, 0)):
@@ -109,7 +107,6 @@ func _physics_process(delta):
 		if (Input.is_action_pressed("ui_up")):
 			# Flip the vector because we want to go up
 			motion = motion + multiply_vector(flip_vector(gdirection), JUMP)
-			
 			$Sprite.play("Jump")
 	elif (get_vertical_motion() > GRAVITY*5):
 		$Sprite.play("Fall")
@@ -118,9 +115,9 @@ func _physics_process(delta):
 	if (friction):
 		# Linear interpolation used to simulate friction
 		set_horizontal_motion(lerp(get_horizontal_motion(), 0, 0.3))
-	else:
+	#else:
 		# Linear interpolation used to simulate friction
-		set_horizontal_motion(lerp(get_horizontal_motion(), 0, 0.02))
+		#set_horizontal_motion(lerp(get_horizontal_motion(), 0, 0.02))
 	
 	# Reset motion if collided (Also say which way is up)
 	motion = move_and_slide(motion, gdirection)
@@ -139,10 +136,10 @@ func move(right):
 	
 	var acc
 	var maxspeed
+	var jmaxspeed = WALK_MAX_SPEED
 	
 	# Play animation
 	if (is_on_floor()):
-		
 		if (Input.is_action_just_pressed("ui_down") and abs(get_horizontal_motion()) > 5):
 			is_sliding = true
 			set_shape(Shape.SLIDE)
@@ -178,7 +175,8 @@ func move(right):
 			
 	else:
 		acc = WALK_ACCELERATION
-		maxspeed = RUN_MAX_SPEED
+		maxspeed = max(abs(get_horizontal_motion()), jmaxspeed)
+		jmaxspeed = maxspeed
 	
 	if (not Input.is_action_pressed("ui_down") and is_sliding):
 			is_sliding = false
