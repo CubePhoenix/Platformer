@@ -82,11 +82,11 @@ func _physics_process(delta):
 	
 	var friction = false
 	
-	if (Input.is_action_pressed("ui_right")):
+	if (Input.is_action_pressed(get_button("ui_right"))):
 		# Move to the right
 		move(true)
 		
-	elif (Input.is_action_pressed("ui_left")):
+	elif (Input.is_action_pressed(get_button("ui_left"))):
 		# Move to the left
 		move(false)
 		
@@ -104,7 +104,7 @@ func _physics_process(delta):
 			is_sliding = false
 	
 	if (is_on_floor()):
-		if (Input.is_action_pressed("ui_up")):
+		if (Input.is_action_pressed(get_button("ui_up"))):
 			# Flip the vector because we want to go up
 			motion = motion + multiply_vector(flip_vector(gdirection), JUMP)
 			$Sprite.play("Jump")
@@ -140,7 +140,7 @@ func move(right):
 	
 	# Play animation
 	if (is_on_floor()):
-		if (Input.is_action_just_pressed("ui_down") and abs(get_horizontal_motion()) > 5):
+		if (Input.is_action_just_pressed(get_button("ui_down")) and abs(get_horizontal_motion()) > 5):
 			is_sliding = true
 			set_shape(Shape.SLIDE)
 			$Sprite.play("Slide")
@@ -148,14 +148,14 @@ func move(right):
 			maxspeed = RUN_MAX_SPEED
 			set_horizontal_motion(lerp(get_horizontal_motion(), 0, 0.0005))
 			
-		elif (Input.is_action_just_released("ui_down")):
+		elif (Input.is_action_just_released(get_button("ui_down"))):
 			is_sliding = false
 			set_shape(Shape.NORMAL)
 			$Sprite.play("Idle")
 			acc = 0
 			maxspeed = WALK_MAX_SPEED
 			
-		elif (Input.is_action_pressed("ui_sprint") and not is_sliding):
+		elif (Input.is_action_pressed(get_button("ui_sprint")) and not is_sliding):
 			set_shape(Shape.NORMAL)
 			$Sprite.play("Run")
 			acc = RUN_ACCELERATION
@@ -178,7 +178,7 @@ func move(right):
 		maxspeed = max(abs(get_horizontal_motion()), jmaxspeed)
 		jmaxspeed = maxspeed
 	
-	if (not Input.is_action_pressed("ui_down") and is_sliding):
+	if (not Input.is_action_pressed(get_button("ui_down")) and is_sliding):
 			is_sliding = false
 	
 	if (right):
@@ -269,3 +269,55 @@ func _reset_level():
 	motion = Vector2(0, 0)
 	$Camera.align()
 	# TODO dramatic death
+	
+# Not sure if i like that. May be removed in future versions
+func get_button(button):
+	match gdirection:
+		Vector2(0, -1):
+			match button:
+				"ui_left":
+					return "ui_left"
+				"ui_right":
+					return "ui_right"
+				"ui_up":
+					return "ui_up"
+				"ui_down":
+					return "ui_down"
+				_:
+					return "ui_sprint"
+		Vector2(0, 1):
+			match button:
+				"ui_left":
+					return "ui_left"
+				"ui_right":
+					return "ui_right"
+				"ui_up":
+					return "ui_down"
+				"ui_down":
+					return "ui_up"
+				_:
+					return "ui_sprint"
+		Vector2(-1, 0):
+			match button:
+				"ui_left":
+					return "ui_up"
+				"ui_right":
+					return "ui_down"
+				"ui_up":
+					return "ui_left"
+				"ui_down":
+					return "ui_right"
+				_:
+					return "ui_sprint"
+		Vector2(1, 0):
+			match button:
+				"ui_left":
+					return "ui_up"
+				"ui_right":
+					return "ui_down"
+				"ui_up":
+					return "ui_right"
+				"ui_down":
+					return "ui_left"
+				_:
+					return "ui_sprint"
